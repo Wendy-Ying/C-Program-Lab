@@ -1,0 +1,11 @@
+﻿  3.c
+D:\wendy\study\C program\homework\week12\Project3\3.c(16,31): warning C4047: “函数”:“const char *”与“int”的间接级别不同
+D:\wendy\study\C program\homework\week12\Project3\3.c(16,28): warning C4024: “strtok_s”: 形参和实参 2 的类型不同
+D:\wendy\study\C program\homework\week12\Project3\3.c(16,39): warning C4047: “=”:“int”与“char *”的间接级别不同
+D:\wendy\study\C program\homework\week12\Project3\3.c(21,30): warning C4047: “函数”:“const char *”与“int”的间接级别不同
+D:\wendy\study\C program\homework\week12\Project3\3.c(21,27): warning C4024: “strtok_s”: 形参和实参 2 的类型不同
+D:\wendy\study\C program\homework\week12\Project3\3.c(21,38): warning C4047: “=”:“int”与“char *”的间接级别不同
+D:\wendy\study\C program\homework\week12\Project3\3.c(23,15): warning C4047: “=”:“int”与“char [2]”的间接级别不同
+D:\wendy\study\C program\homework\week12\Project3\3.c(27,26): warning C4047: “函数”:“const char *”与“int”的间接级别不同
+D:\wendy\study\C program\homework\week12\Project3\3.c(27,23): warning C4024: “atof”: 形参和实参 1 的类型不同
+  Project3.vcxproj -> D:\wendy\study\C program\homework\week12\Project3\x64\Debug\Project3.exe
