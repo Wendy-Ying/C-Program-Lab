@@ -1,0 +1,15 @@
+﻿  project1.cpp
+D:\wendy\study\C program\homework\week13\Project1\project1.cpp(206,33): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+D:\wendy\study\C program\homework\week13\Project1\project1.cpp(207,33): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+D:\wendy\study\C program\homework\week13\Project1\project1.cpp(216,34): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+D:\wendy\study\C program\homework\week13\Project1\project1.cpp(217,34): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+D:\wendy\study\C program\homework\week13\Project1\project1.cpp(221,17): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+D:\wendy\study\C program\homework\week13\Project1\project1.cpp(222,17): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+D:\wendy\study\C program\homework\week13\Project1\project1.cpp(223,17): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+D:\wendy\study\C program\homework\week13\Project1\project1.cpp(224,17): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  正在生成代码
+  2 of 86 functions ( 2.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  Project1.vcxproj -> D:\wendy\study\C program\homework\week13\Project1\x64\Release\Project1.exe

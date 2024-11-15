@@ -1,0 +1,254 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+
+typedef enum { seabass, salmon }category;
+typedef struct
+{
+	float x;
+	float y;
+}coordinate;
+typedef struct
+{
+	coordinate features;
+	category cluster;
+	float distance[2];
+}fishes;
+
+void show_result(fishes* fishes, coordinate* centers);
+
+using namespace std;
+using namespace cv;
+int main()
+{
+	//读取数据，分解，转换类型
+	FILE* fp;
+	fp = fopen("D:\\wendy\\study\\C program\\homework\\week13\\cluster.csv","r");
+	if (fp == NULL)
+	{
+		printf("文件读取失败");
+	}//读数据完毕
+
+	char* buffer = (char*)malloc(100 * sizeof(char));
+	char* save = buffer;//准备buffer
+
+	int i;
+	char seps[] = " ,";
+	char* token;//准备分割条件
+	double number[400];//number为预先存数据的数组
+	int j = 0;
+	for (i = 0; i < 200; i++)
+	{
+		fgets(buffer, 100, fp);
+		//printf("%s\t", buffer);//存数据完毕
+
+		token = strtok(buffer, seps);
+		while (token != NULL)
+		{
+			number[j] = atof(token);
+			//printf("%f\t", number[j]);
+			j++;
+			token = strtok(NULL, seps);
+		}
+		//一组数据分解完毕
+	}
+	fclose(fp);
+	free(buffer);//读取完毕，全部关闭释放
+
+	for (j = 0; j < 400; j++)
+	{
+		//printf("%f\n", number[j]);
+	}//检验数据读取分解无误
+
+	//得到鱼群数据
+	struct fish
+	{
+		double a = 0;
+		double b = 0;
+		double distance1 = 0;
+		double distance2 = 0;
+		int category = 0;
+	};//其中a、b各为一个坐标，distance1到类1距离，distance2到类2距离
+	struct fish fish[200];
+
+	for (i = 0; i < 200; i++)
+	{
+		fish[i].a = number[i * 2];
+		fish[i].b = number[i * 2 + 1];
+	}//复制处理好的数据到鱼群数据中
+
+	//产生初始值
+	double x1, x2, y1, y2;//a对应x,b对应y
+	srand((unsigned int)time(NULL));//随机函数
+	x1 = rand() % 10 + 10;
+	x2 = rand() % 10;
+	y1 = rand() % 5 + 5;
+	y2 = rand() % 5;
+	printf("初始中心坐标为：\t(%f,%f)\t(%f,%f)\n", x1, y1, x2, y2);
+
+	int times = 1;//记录运算次数
+
+	//sum记录总和，以便运算下一个值
+	double sum1x = 0;
+	double sum1y = 0;
+	double sum2x = 0;
+	double sum2y = 0;
+	//k记录个数
+	int k1 = 0;
+	int k2 = 0;
+	//temp留存数据
+	double temp1 = 0;
+	double temp2 = 0;
+	double temp3 = 0;
+	double temp4 = 0;
+
+	//开始运算
+	while (1)
+	{
+		//计算距离并判断类型
+		for (i = 0; i < 200; i++) 
+		{
+			fish[i].distance1 = sqrt((x1 - fish[i].a) * (x1 - fish[i].a) + (y1 - fish[i].b) * (y1 - fish[i].b));
+			fish[i].distance2 = sqrt((x2 - fish[i].a) * (x2 - fish[i].a) + (y2 - fish[i].b) * (y2 - fish[i].b));
+			//计算出distance
+			if (fish[i].distance1 == fish[i].distance2)
+			{
+				printf("Wrong!\nThis fish is at the same distance from the two centers.");
+			}
+			if (fish[i].distance1 < fish[i].distance2)
+			{
+				fish[i].category = 1;
+			}
+			if (fish[i].distance1 > fish[i].distance2)
+			{
+				fish[i].category = 2;
+			}//判断类型，类1为1，类2为2
+			//printf("The category of fish %d is %d.\n", i, fish[i].category);
+		}
+
+		//保留原来的中心值数据，以便检验退出条件
+		temp1 = x1;
+		temp2 = y1;
+		temp3 = x2;
+		temp4 = y2;
+
+		//分配新的中心
+		sum1x = 0;
+		sum1y = 0;
+		sum2x = 0;
+		sum2y = 0;
+		k1 = 0;
+		k2 = 0;
+
+		for (i = 0; i < 200; i++)
+		{
+			if (fish[i].category == 1)
+			{
+				sum1x += fish[i].a;
+				sum1y += fish[i].b;
+				k1++;
+			}
+			if (fish[i].category == 2)
+			{
+				sum2x += fish[i].a;
+				sum2y += fish[i].b;
+				k2++;
+			}
+		}
+
+		x1 = (double)sum1x / k1;
+		y1 = (double)sum1y / k1;
+		x2 = (double)sum2x / k2;
+		y2 = (double)sum2y / k2;
+		//计算新坐标
+
+		printf("第%d次迭代后中心坐标为：\t(%f,%f)\t(%f,%f)\n", times, x1, y1, x2, y2);//重新分配坐标完毕
+		
+		//寻找最终值，判断退出条件
+		if ((temp1 == x1) && (temp2 == y1) && (temp3 == x2) && (temp4 == y2))
+		{
+			break;
+		}
+		
+		times++;//记录运算次数
+
+	}
+
+	//输出结果
+	printf("迭代次数：%d\n", times);
+
+	//求鱼的数量
+	int sum1 = 0;
+	int sum2 = 0;
+	for (i = 0; i < 200; i++)
+	{
+		if (fish[i].category == 1)
+		{
+			sum1++;
+		}
+		if (fish[i].category == 2)
+		{
+			sum2++;
+		}
+	}
+	printf("第一种鱼的数量为：%d\n", sum1);
+	printf("第二种鱼的数量为：%d\n", sum2);
+
+	//在opencv中呈现
+	
+	fishes fishes[200];
+	for (i = 0; i < 200; i++)
+	{
+		fishes[i].features.x = fish[i].a;
+		fishes[i].features.y = fish[i].b;
+		if (fish[i].category == 1)
+		{
+			fishes[i].cluster = seabass;
+		}
+		if (fish[i].category == 2)
+		{
+			fishes[i].cluster = salmon;
+		}
+		fishes[i].distance[0] = fish[i].distance1;
+		fishes[i].distance[1] = fish[i].distance2;
+	}
+
+	coordinate centers[2];
+	centers[0].x = x1;
+	centers[0].y = y1;
+	centers[1].x = x2;
+	centers[1].y = y2;
+
+	show_result(fishes, centers);
+
+	return 0;
+}
+
+void show_result(fishes* fishes, coordinate* centers)
+{
+	cv::Mat result = cv::Mat(750, 1500, CV_8UC3, cv::Scalar(0, 0, 0));
+	for (int i = 0; i < 200; i++)
+	{
+		cv::Point2f fish_point = cv::Point2f(fishes[i].features.x * 50, fishes[i].features.y * 50);
+		if (fishes[i].cluster == 0)
+		{
+			//printf("%f %f\n", fishes[i].features.x, fishes[i].features.y);
+			cv::circle(result, fish_point, 5, cv::Scalar(255, 0, 0), -1);
+		}
+		else
+		{
+			cv::circle(result, fish_point, 5, cv::Scalar(0, 0, 255), -1);
+		}
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		cv::Point2f center_point = cv::Point2f(centers[i].x * 50, centers[i].y * 50);
+		cv::circle(result, center_point, 5, cv::Scalar(0, 255, 0), -1);
+	}
+	imshow("result", result);
+	cv::waitKey(0);
+}

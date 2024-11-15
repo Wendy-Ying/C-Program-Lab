@@ -1,0 +1,52 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+using namespace std;
+using namespace cv;
+int main()
+{
+	//读取数据，分解，转换类型
+	FILE* fp;
+	fp = fopen("D:\\wendy\\study\\C program\\homework\\week13\\cluster.csv","r");
+	if (fp == NULL)
+	{
+		printf("文件读取失败");
+	}//读数据完毕
+
+	char* buffer = (char*)malloc(100 * sizeof(char));
+	char* save = buffer;
+
+	int i;
+	char seps[] = " ,";
+	char* token;
+	double number[400];
+	int j = 0;
+	for (i = 0; i < 200; i++)
+	{
+		fgets(buffer, 100, fp);
+		printf("%s\n", buffer);//存数据完毕
+
+		token = strtok(buffer, seps);
+		while (token != NULL)
+		{
+			number[j] = atof(token);
+			printf("%f\n", number[j]);
+			j++;
+			token = strtok(NULL, seps);
+		}
+		printf("\n");//一组数据分解完毕
+	}
+	fclose(fp);
+
+	for (j = 0; j < 400; j++)
+	{
+		printf("%f\n", number[j]);
+	}//检验数据读取分解无误
+
+
+	return 0;
+}
