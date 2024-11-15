@@ -1,0 +1,3 @@
+﻿  project1.c
+D:\wendy\study\C program\homework\week10\Project1\project1.c(13,1): warning C4047: “初始化”:“int”与“char [2]”的间接级别不同
+  Project1.vcxproj -> D:\wendy\study\C program\homework\week10\Project1\x64\Debug\Project1.exe
