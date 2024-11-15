@@ -1,0 +1,142 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _WINSOCK_DEPRECATED_NO_WARNINGS 
+#include <winsock2.h> 
+#include <stdlib.h> 
+#include <conio.h> 
+#include <stdio.h> 
+#include <string.h>
+#pragma comment(lib, "WS2_32") // 链接到WS2_32.lib 
+
+#define server_IP "127.0.0.1"
+//#define server_IP "10.27.44.83"
+
+
+void CInitSock(BYTE minorVer, BYTE majorVer)
+{
+	// 初始化WS2_32.dll 
+	WSADATA wsaData;
+	WORD sockVersion = MAKEWORD(minorVer, majorVer);
+	if (WSAStartup(sockVersion, &wsaData) != 0)
+	{
+		exit(0);
+	}
+}
+
+
+int main()
+{
+	//设置类型	
+	typedef struct
+	{
+		int stu_number;
+		char name[20];
+		int score;
+	}score;
+	score Transcripts[10];
+
+	int i, j;
+	for (i = 0; i < 10; i++)
+	{
+		Transcripts[i].stu_number = 0;
+		Transcripts[i].name[0] = '\0';
+		Transcripts[i].score = 0;
+	}
+
+	/*	for(i=0;i<10;i++)
+		{
+			printf("number:%d\t\tname:%s\t\tscore:%d\n",Transcripts[i].stu_number,Transcripts[i].name,Transcripts[i].score);
+		}
+		printf("\n");
+	*/
+
+	//开始读取数据	
+	FILE* pfile;
+	pfile = fopen("D:/wendy/study/C program/homework/week8/data.bin", "rb");
+
+	fread(Transcripts, sizeof(score), 10, pfile);
+
+	/*	for(i=0;i<10;i++)
+		{
+			printf("number:%d\t\tname:%s\t\tscore:%d\n",Transcripts[i].stu_number,Transcripts[i].name,Transcripts[i].score);
+		}
+		printf("\n");
+	*/
+	//读取数据完毕
+
+	//排序	
+	score temp;
+	for (i = 0; i < 9; i++)
+	{
+		for (j = 8 - i; j >= 0; j--)
+		{
+			if (Transcripts[j].score < Transcripts[j + 1].score)
+			{
+				temp = Transcripts[j];
+				Transcripts[j] = Transcripts[j + 1];
+				Transcripts[j + 1] = temp;
+			}
+		}
+	}
+
+	for (i = 0; i < 10; i++)
+	{
+		printf("number:%d\t\tname:%s\t\tscore:%d\n", Transcripts[i].stu_number, Transcripts[i].name, Transcripts[i].score);
+	}
+	
+	//排序完毕
+	//关闭文件
+	fclose(pfile);
+
+	CInitSock(2, 2);//设置版本信息
+
+	SOCKET sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);// 创建套节字 
+
+	if (sockfd == INVALID_SOCKET)
+	{
+		printf(" Failed socket() \n");
+		return 0;
+	}
+
+	// 填写远程地址信息 
+	struct sockaddr_in servAddr;
+	servAddr.sin_family = AF_INET;
+	servAddr.sin_port = htons(4567);
+	// 注意，这里要填写服务器程序（TCPServer程序）所在机器的IP地址 
+	// 如果你的计算机没有联网，直接使用127.0.0.1即可 
+	servAddr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+	if (connect(sockfd, (const struct sockaddr*)&servAddr, sizeof(servAddr)) == -1)
+	{
+		printf(" Failed connect() \n");
+		return 0;
+	}
+	char buff[256];
+	char szText[256]="\0";
+	
+		//从服务器端接收数据 
+		int length = sizeof(servAddr);
+		int nRecv = recvfrom(sockfd, buff, 256, 0, (struct sockaddr*)&servAddr, &length);
+		//int nRecv = recv(sockfd, buff, 256, 0);
+		if (nRecv > 0)
+			printf("接收到数据：%s\n", buff);
+
+		//发送数据
+		char a[256];
+		for (i = 0; i < 10; i++)
+		{
+			sprintf(a,"%d,", Transcripts[i].stu_number);
+			strcat(szText, a);
+			sprintf(a, "%s,", Transcripts[i].name);
+			strcat(szText, a);
+			sprintf(a, "%d\n", Transcripts[i].score);
+			strcat(szText, a);
+		}
+			
+			sendto(sockfd, szText, strlen(szText) + 1, 0, (const struct sockaddr*)&servAddr, sizeof(servAddr));
+		
+		//send(sockfd, szText, strlen(szText), 0);
+
+		
+	// 关闭套节字 
+	closesocket(sockfd);
+	return 0;
+}

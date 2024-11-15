@@ -1,0 +1,3 @@
+﻿  Client.c
+D:\wendy\study\C program\homework\week8\Clinent\Client.c(134,42): warning C4267: “函数”: 从“size_t”转换到“int”，可能丢失数据
+  Clinent.vcxproj -> D:\wendy\study\C program\homework\week8\Clinent\x64\Debug\Clinent.exe
