@@ -1,0 +1,4 @@
+﻿  源.cpp
+D:\wendy\study\C program\Project1\Project1\源.cpp(6,9): warning C4305: “=”: 从“double”到“float”截断
+D:\wendy\study\C program\Project1\Project1\源.cpp(7,9): warning C4305: “=”: 从“double”到“float”截断
+  Project1.vcxproj -> D:\wendy\study\C program\Project1\x64\Debug\Project1.exe

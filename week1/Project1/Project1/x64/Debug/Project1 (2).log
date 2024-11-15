@@ -1,0 +1,3 @@
+﻿  源.cpp
+D:\wendy\study\C program\Project1\Project1\源.cpp(13,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  Project1.vcxproj -> D:\wendy\study\C program\Project1\x64\Debug\Project1.exe
