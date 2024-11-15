@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+int main(int argc, char* argv[]) {
+
+	//定义
+	typedef enum category { A, B } Enum;
+	typedef struct point
+	{
+		int x;
+		int y;
+		float dist;
+		Enum category;
+	}Point;
+
+	Point points[100];
+	
+	//读入数据
+	FILE* fp;
+	fp = fopen("D:\wendy\study\C program\homework\week9\Points.bin", "rb");
+	fscanf(fp, "%s", points);
+
+	//输入数据
+	int x1=0;
+	int y1 = 0;
+	printf("Please enter the coordinate of a new point(x,y):\n");
+	scanf("%d,%d", &x1, &y1);
+
+	int k;
+	printf("The value of K is:\n");
+	scanf("%d", &k);
+
+	//计算长度
+	int i;
+	for (i = 0; i < 100; i++)
+	{
+		points[i].dist =(float) sqrt((x1 - points[i].x) * (x1 - points[i].x) + (y1 - points[i].y) * (y1 - points[i].y));
+	}
+
+	//排序
+	int m, n;
+	for (m = 0; m < 99; m++)
+	{
+		for (n = 0; n < 99 - m; n++)
+		{
+			if (points[n].dist > points[n + 1].dist)
+			{
+				float temp;
+				temp = points[n].dist;
+				points[n].dist = points[n + 1].dist;
+				points[n + 1].dist = temp;
+				temp = points[n].x;
+				points[n].x = points[n + 1].x;
+				points[n + 1].x = temp;
+				temp = points[n].y;
+				points[n].y = points[n + 1].y;
+				points[n + 1].y = temp;
+				Enum c = points[n].category;
+				points[n].category = points[n + 1].category;
+				points[n + 1].category = c;
+			}
+		}
+	}
+
+	//检验
+	for(i=0;i<100;i++)
+	{
+		printf("%f\n",points[i].dist);
+	}
+	
+	//输出结果
+	printf("P belongs to: ");
+
+	if (points[0].category + points[1].category + points[2].category >= 2)
+	{
+		printf("B.\n");
+	}
+	else
+	{
+		printf("A.\n");
+	}
+
+	return 0;
+}

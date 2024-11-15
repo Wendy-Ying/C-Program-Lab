@@ -1,0 +1,6 @@
+﻿  server.c
+D:\wendy\study\C program\homework\week9\server\server.c(43,23): warning C4133: “函数”: 从“sockaddr_in *”到“const sockaddr *”的类型不兼容
+D:\wendy\study\C program\homework\week9\server\server.c(63,38): warning C4133: “函数”: 从“sockaddr_in *”到“sockaddr *”的类型不兼容
+D:\wendy\study\C program\homework\week9\server\server.c(70,39): warning C4267: “函数”: 从“size_t”转换到“int”，可能丢失数据
+D:\wendy\study\C program\homework\week9\server\server.c(133,24): warning C4013: “sqrt”未定义；假设外部返回 int
+  server.vcxproj -> D:\wendy\study\C program\homework\week9\server\x64\Debug\server.exe
